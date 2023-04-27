@@ -1,0 +1,54 @@
+{
+	"type" : "tree",
+	"content" : {"entities" : [
+		{
+			"type" : "person", 
+			"content" : {
+				"infos" : [{"type" : "string", "content" : {"string" : "sus"}}]
+			},
+			"targets" : {"image" : "0", "child_part" : "0", "parent_part" : "0"}
+		}
+		,
+		{
+			"type" : "person", 
+			"content" : {
+				"infos" : []
+			},
+			"targets" : {"image" : "1", "child_part" : "1", "parent_part" : "1"}
+		}
+		,
+		{
+			"type" : "person", 
+			"content" : {
+				"infos" : []
+			},
+			"targets" : {"image" : "2", "child_part" : "2", "parent_part" : "2"}
+		}
+		,
+		{
+			"type" : "person", 
+			"content" : {
+				"infos" : []
+			},
+			"targets" : {"image" : "3", "child_part" : "3", "parent_part" : "3"}
+		}
+		,
+		{
+			"type" : "partnership", 
+			"content" : {
+				"infos" : [],
+				"parents" : [
+					{"type" : "parent_ptr", "content" : {"person" : "0"}}, 
+					{"type" : "parent_ptr", "content" : {"person" : "1"}}
+				],
+				"children" : [
+					{"type" : "child_ptr", "content" : {"person" : "2"}}, 
+					{"type" : "child_ptr", "content" : {"person" : "3"}}
+				]
+			},
+			"targets" : {"image" : "4"}
+		}
+	],
+	"images" : []
+	}
+}

@@ -1,0 +1,109 @@
+[
+{
+	"type" : "info",
+	"abstract" : true
+},
+
+{
+	"type" : "string",
+	"super" : ["info"],
+	"content" : {
+        "string" : {"kind" : "str"}
+    }
+},
+
+{
+	"type" : "subinfo",
+	"super" : ["info"],
+	"content" : {
+        "title" : {"kind" : "str"},
+		"infos" : {"kind" : "list", "item_t" : {"kind" : "inst", "type" : "info"}}
+    }
+},
+
+{
+	"type" : "date",
+	"super" : ["info"],
+	"content" : {
+        "day" : {"kind" : "str", "optional" : true},
+		"month" : {"kind" : "str", "optional" : true},
+		"year" : {"kind" : "str", "optional" : true},
+		"tags" : {"kind" : "list", "item_t" : {"kind" : "str"}}
+    }
+},
+
+
+
+
+{
+    "type" : "entity",
+	"abstract" : true,
+	"targets" : ["image"],
+	"content" : {
+		"infos" : {"kind" : "list", "item_t" : {"kind" : "inst", "type" : "info"}},
+		"parent_ordering" : {"kind" : "int", "default" : 0},
+        "child_ordering" : {"kind" : "int", "default" : 0}
+    }
+},
+
+
+{
+    "type" : "person",
+    "super" : ["entity"],
+	"targets" : ["child_part", "parent_part"]
+},
+
+{
+    "type" : "parent_ptr",
+	"content" : {
+        "person" : {"kind" : "ptr", "type" : "person", "target" : "child_part"}
+    }
+},
+
+{
+    "type" : "child_ptr", 
+    "content" : {
+        "person" : {"kind" : "ptr", "type" : "person", "target" : "parent_part"},
+		"adopted" : {"kind" : "bool", "default" : false}
+    }
+},
+
+{
+    "type" : "partnership", 
+    "super" : ["entity"],
+    "content" : {
+        "parents" : {"kind" : "list", "item_t" : {"kind" : "inst", "type" : "parent_ptr"}},
+        "children" : {"kind" : "list", "item_t" : {"kind" : "inst", "type" : "child_ptr"}}
+    }
+},
+
+{
+    "type" : "image",
+	"content" : {
+		"infos" : {"kind" : "list", "item_t" : {"kind" : "inst", "type" : "info"}},
+		"path" : {"kind" : "str"},
+		"subimages" : {"kind" : "list", "item_t" : {"kind" : "inst", "type" : "subimage"}}
+    }
+},
+
+{
+    "type" : "subimage",
+	"content" : {
+		"entity" : {"kind" : "ptr", "type" : "entity", "target" : "image"},
+        "x" : {"kind" : "float"},
+		"y" : {"kind" : "float"},
+		"w" : {"kind" : "float"},
+		"h" : {"kind" : "float"},
+		"usable" : {"kind" : "bool"}
+    }
+},
+
+
+{
+	"type" : "tree",
+	"content" : {
+		"entities" : {"kind" : "list", "item_t" : {"kind" : "inst", "type" : "entity"}},
+		"images" : {"kind" : "list", "item_t" : {"kind" : "inst", "type" : "image"}}
+    }
+}
+]
