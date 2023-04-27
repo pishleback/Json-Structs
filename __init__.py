@@ -274,8 +274,7 @@ class Context():
 
 
 
-
-def parse_root(root_t, data):
+def parse_root(ctx, root_t, data):
     #accumulate a set of (obj, tn, targ, ident)
     #once all objects are parsed, we compare this set against target_index to check that all points are pointing to valid things
     existing_pointers = set()
@@ -430,7 +429,7 @@ class Data():
         self._ctx = ctx
         self._root_t = root_t
         
-        root, target_owners = parse_root(self._root_t, root_data)
+        root, target_owners = parse_root(ctx, self._root_t, root_data)
         self._root = root
         self._target_owners = target_owners
 
@@ -444,7 +443,7 @@ class Data():
 
     def validate(self):
         #this checks that self._root has a valid format, assuming that self._root.to_json() works correctly, which it should
-        parse_root(self._root_t, self._root.to_json())
+        parse_root(self._ctx, self._root_t, self._root.to_json())
         
 
 
@@ -453,93 +452,11 @@ class Data():
 if __name__ == "__main__":
     with open("context.txt", "r") as f:
         ctx = Context(json.loads(f.read()))
-
-
-
-##    with open("ft3.json", "r") as f:
-##        tree = json.loads(f.read())
-##
-##    def parse(ident):
-##        obj = tree[ident]
-##
-##        t = obj["type"]
-##        ans = {"type" : t}
-##        
-##        content = {}
-##        if t == "tree":
-##            old_ents = [parse(ob_ident) for ob_ident in obj["content"]["entities"]]
-##            content["entities"] = []
-##            content["images"] = []
-##            for e in old_ents:
-##                if e["type"] == "image":
-##                    content["images"].append(e)
-##                else:
-##                    content["entities"].append(e)
-##        elif t == "person":
-##            content["parent_ordering"] = obj["content"]["parent_ordering"]
-##            content["child_ordering"] = obj["content"]["child_ordering"]
-##            content["infos"] = [parse(info_ident) for info_ident in obj["content"]["infos"]]
-##            ans["targets"] = {"image" : ident, "child_part" : ident, "parent_part" : ident}
-##        elif t == "partnership":
-##            content["parent_ordering"] = obj["content"]["parent_ordering"]
-##            content["child_ordering"] = obj["content"]["child_ordering"]
-##            content["infos"] = [parse(info_ident) for info_ident in obj["content"]["infos"]]
-##            content["parents"] = [parse(i) for i in obj["content"]["parents"]]
-##            content["children"] = [parse(i) for i in obj["content"]["children"]]
-##            ans["targets"] = {"image" : ident}
-##        elif t == "parent_ptr":
-##            content["person"] = obj["content"]["target"]
-##        elif t == "child_ptr":
-##            content["person"] = obj["content"]["target"]
-##            content["adopted"] = obj["content"]["adopted"]
-##        elif t == "image":
-##            content["infos"] = [parse(info_ident) for info_ident in obj["content"]["infos"]]
-##            content["path"] = obj["content"]["path"]
-##            content["subimages"] = [parse(subimg_ident) for subimg_ident in obj["content"]["subimages"]]
-##        elif t == "subimage":
-##            content["entity"] = obj["content"]["entity"]
-##            content["x"] = obj["content"]["x"]
-##            content["y"] = obj["content"]["y"]
-##            content["w"] = obj["content"]["w"]
-##            content["h"] = obj["content"]["h"]
-##            content["usable"] = obj["content"]["usable"]
-##        elif t == "subinfo":
-##            content["title"] = obj["content"]["title"]
-##            content["infos"] = [parse(info_ident) for info_ident in obj["content"]["infos"]]
-##        elif t == "string":
-##            content["string"] = obj["content"]["string"]
-##        elif t == "date":
-##            if "day" in obj["content"]:
-##                content["day"] = obj["content"]["day"]
-##            if "month" in obj["content"]:
-##                content["month"] = obj["content"]["month"]
-##            if "year" in obj["content"]:
-##                content["year"] = obj["content"]["year"]
-##            content["tags"] = obj["content"]["tags"]
-##        else:
-##            raise NotImplementedError(t)
-##
-##        ans["content"] = content
-##        
-##        return ans
-##
-##    d = parse("0")
-##
-##    with open("sus.json", "w") as g:
-##        g.write(json.dumps(d, indent = 2))
-##
-##    print("oop")
-##    
-##    data = Data(ctx, "tree", d)
-##    print("YAY", type(data))
-
         
-    with open("ftng.json", "r") as f:
+    with open("data.txt", "r") as f:
         data = Data(ctx, "tree", json.loads(f.read()))
 
-    print(data)
-    print(data.get_root()["entities"][100].get_reverse_pointers("child_part")[0]["person"]().get_target("child_part"))
-
+    print(data.to_json())
 
 
 
